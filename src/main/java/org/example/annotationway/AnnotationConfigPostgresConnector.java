@@ -1,10 +1,10 @@
-package org.example.connector;
+package org.example.annotationway;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 
 @Component
 @Getter

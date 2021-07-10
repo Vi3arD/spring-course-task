@@ -1,11 +1,7 @@
-import org.example.config.DataSource;
 import org.example.connector.ProgrammaticConfigPostgresConnector;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -23,6 +19,11 @@ public class ProgrammaticConfigTest {
             configurer.setLocations(new ClassPathResource("db.properties"));
             return configurer;
         });
+
+//        context.registerBean("dataSource", PGSimpleDataSource.class);
+//        context.registerBean(ProgrammaticConfigPostgresConnector.class,
+//                "${login}", "${password}", PGSimpleDataSource.class
+//        );
 
         GenericBeanDefinition beanOtherDef = new GenericBeanDefinition();
         beanOtherDef.setBeanClass(PGSimpleDataSource.class);
