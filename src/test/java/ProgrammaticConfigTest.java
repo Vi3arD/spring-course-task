@@ -1,8 +1,7 @@
 import org.example.connector.ProgrammaticConfigPostgresConnector;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
-import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
@@ -20,23 +19,12 @@ public class ProgrammaticConfigTest {
             return configurer;
         });
 
-//        context.registerBean("dataSource", PGSimpleDataSource.class);
-//        context.registerBean(ProgrammaticConfigPostgresConnector.class,
-//                "${login}", "${password}", PGSimpleDataSource.class
-//        );
+        RuntimeBeanReference ref = new RuntimeBeanReference(PGSimpleDataSource.class);
 
-        GenericBeanDefinition beanOtherDef = new GenericBeanDefinition();
-        beanOtherDef.setBeanClass(PGSimpleDataSource.class);
-        context.registerBeanDefinition("dataSource", beanOtherDef);
-
-        GenericBeanDefinition gbd = new GenericBeanDefinition();
-        gbd.setBeanClass(ProgrammaticConfigPostgresConnector.class);
-        ConstructorArgumentValues cav = new ConstructorArgumentValues();
-        cav.addIndexedArgumentValue(0, "${login}");
-        cav.addIndexedArgumentValue(1, "${password}");
-        cav.addIndexedArgumentValue(2, beanOtherDef);
-        gbd.setConstructorArgumentValues(cav);
-        context.registerBeanDefinition("programmaticConfigPostgresConnector", gbd);
+        context.registerBean("dataSource", PGSimpleDataSource.class);
+        context.registerBean(ProgrammaticConfigPostgresConnector.class,
+                "${login}", "${password}", ref
+        );
 
         context.refresh();
 
